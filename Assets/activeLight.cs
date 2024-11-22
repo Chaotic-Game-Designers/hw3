@@ -3,13 +3,13 @@ using UnityEngine.Rendering.Universal;
 
 public class LightToggle : MonoBehaviour
 {
-    private Light2D[] lightObjects;
+    public Light2D[] lightObjects;
 
-    void Start()
-    {
+    // void Start()
+    // {
         
-        lightObjects = GetComponentsInChildren<Light2D>();
-    }
+    //     lightObjects = GetComponentsInChildren<Light2D>();
+    // }
 
     void Update()
     {
