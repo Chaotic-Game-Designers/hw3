@@ -6,19 +6,38 @@ public class Driver : MonoBehaviour
 {
     [SerializeField] float steerSpeed = 100f;
     [SerializeField] float moveSpeed = 15f;
-    // Start is called before the first frame update
+    [SerializeField] float maxSpeed = 20f;
+    [SerializeField] float brakeSpeed = 5f;
+
+    private Rigidbody2D rb;
+    private float currentSpeed = 0f;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
-        float moveAmount = Input.GetAxis("Vertical") * moveSpeed* Time.deltaTime;
-        transform.Rotate(0,0,-steerAmount);
-        transform.Translate(0,moveAmount,0);
-        
+        float moveInput = Input.GetAxis("Vertical");
+
+        if (moveInput > 0)
+        {
+            currentSpeed += moveInput * moveSpeed * Time.deltaTime;
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+        }
+        else if (moveInput < 0)
+        {
+            currentSpeed -= brakeSpeed * Time.deltaTime;
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+        }
+
+        if (currentSpeed > 0)
+        {
+            transform.Rotate(0, 0, -steerAmount);
+        }
+
+        rb.velocity = transform.up * currentSpeed;
     }
 }
